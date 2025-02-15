@@ -1,0 +1,137 @@
+local a = Instance.new("ScreenGui")
+local b = Instance.new("Frame")
+local c = Instance.new("TextButton")
+local d = Instance.new("TextBox")
+local e = Instance.new("TextButton")
+local f = Instance.new("TextButton")
+local g = Instance.new("TextButton")
+local h = Instance.new("TextButton")
+local i = game:GetService("CoreGui")
+local gg = Instance.new("UICorner")
+
+a.Parent = i
+b.Parent = a
+c.Parent = a
+d.Parent = b
+e.Parent = b
+f.Parent = b
+g.Parent = b
+h.Parent = b
+
+b.Size = UDim2.new(1, 0, 0.4, 0)
+b.Position = UDim2.new(0, 0, 1, 0)
+b.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+b.BorderSizePixel = 0
+
+c.Size = UDim2.new(0, 400, 0, 20)
+c.Position = UDim2.new(0.5, -200, 1, -40)
+c.Text = "Press Twice!"
+c.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+c.BackgroundTransparency = 0.5
+c.BorderSizePixel = 0
+gg.Parent = c
+gg.CornerRadius = UDim.new(0.5,0)
+d.Size = UDim2.new(0.5, 0, 1, 0)
+d.Position = UDim2.new(0, 0, 0, 0)
+d.PlaceholderText = "Local . . ."
+d.Text = ""
+d.Font = Enum.Font.Code
+d.TextSize = 12
+d.BackgroundColor3 = Color3.fromRGB(60, 60, 70)
+d.TextColor3 = Color3.fromRGB(255, 255, 255)
+d.BorderSizePixel = 0
+d.ClearTextOnFocus = false
+d.TextWrapped = true
+d.TextScaled = false
+d.TextYAlignment = Enum.TextYAlignment.Top
+d.TextXAlignment = Enum.TextXAlignment.Left
+d.MultiLine = true
+d.ClipsDescendants = true
+
+local j, k = 0.5, 0.2
+local l = Color3.fromRGB(0, 100, 150)
+
+local function m(n, o, p)
+    n.Size = UDim2.new(j, 0, k, 0)
+    n.Position = p
+    n.Text = o
+    n.BackgroundColor3 = l
+    n.BorderSizePixel = 0
+    n.TextColor3 = Color3.fromRGB(255, 255, 255)
+    n.TextSize = 14
+    n.TextXAlignment = Enum.TextXAlignment.Left
+end
+
+m(e, " Execute Script", UDim2.new(0.6, 0, 0, 0))
+m(f, " Copy Text", UDim2.new(0.6, 0, 0.25, 0))
+m(g, " Clear Text", UDim2.new(0.6, 0, 0.5, 0))
+m(h, " Paste Code", UDim2.new(0.6, 0, 0.75, 0))
+
+local q = false
+
+local function r()
+    if q then
+        b:TweenPosition(UDim2.new(0, 0, 1, 0), "Out", "Quad", 0.5, true)
+        c:TweenPosition(UDim2.new(0.5, -200, 1, -40), "Out", "Quad", 0.5, true)
+    else
+        b:TweenPosition(UDim2.new(0, 0, 0.6, 0), "Out", "Quad", 0.5, true)
+        c:TweenPosition(UDim2.new(0.5, -200, 0.6, -40), "Out", "Quad", 0.5, true)
+    end
+    q = not q
+end
+
+c.MouseButton1Click:Connect(r)
+
+e.MouseButton1Click:Connect(function()
+    local s = d.Text
+    loadstring(s)()
+end)
+
+f.MouseButton1Click:Connect(function()
+    setclipboard(d.Text)
+end)
+
+g.MouseButton1Click:Connect(function()
+    d.Text = ""
+end)
+
+h.MouseButton1Click:Connect(function()
+    d.Text = tostring(getclipboard())
+end)
+
+local t = Instance.new("TextButton")
+t.Parent = b
+t.Size = UDim2.new(0.1, 0, 0.2, 0)
+t.Position = UDim2.new(0.5, 0, 1, -20)
+t.Text = "X"
+t.BackgroundColor3 = Color3.fromRGB(150, 0, 9)
+t.BorderSizePixel = 0
+t.TextColor3 = Color3.fromRGB(255, 255, 255)
+t.TextSize = 20
+
+t.MouseButton1Click:Connect(function()
+    b:Destroy()
+    c:Destroy()
+end)
+
+local u = false
+local v, w, x = nil, nil, nil
+
+c.MouseButton1Down:Connect(function(y)
+    u = true
+    v = y.Position
+    w = c.Position
+    c.MouseButton1Click:Disconnect()
+end)
+
+c.MouseMoved:Connect(function(y)
+    if u then
+        local deltaY = y.Y - v.Y
+        c.Position = UDim2.new(w.X.Scale, w.X.Offset, w.Y.Scale + deltaY / c.AbsoluteSize.Y, w.Y.Offset)
+    end
+end)
+
+c.MouseButton1Up:Connect(function()
+    u = false
+    c.MouseButton1Click:Connect(r)
+end)
